@@ -1,5 +1,11 @@
-const defs = require()
+const defs = require('./defs').lex
+const parser = require('./actions')
 
+const txt = `
+div.row
+`;
+console.log(JSON.stringify(parser(txt), null, "\t"))
+// console.log(JSON.stringify(defs(txt), null, "\t"))
 // const parser = require("./actions").toAst
 /*const lex = require("../step1_lexing/step1_lexing").lex
 

@@ -21,10 +21,11 @@ const Semicolon = tok({name: "semicolon", pattern: /;/});
 
 const eq = tok({name: 'eq', pattern: /=/});
 const dot = tok({name: 'dot', pattern: /\./});
-const hash = tok({name: 'hash', pattern: /#/});
-const str = tok({name: 'str', pattern: /[\w\d-]*/});
+const hash = tok({name: 'hash', pattern: /\#/});
+const str = tok({name: 'str', pattern: /:?@?[\w\d-\(\)]+/});
 const style = tok({name: 'style', pattern: /style/});
-const quote = tok({name: 'quote', pattern: /"/});
+const quote = tok({name: 'quote', pattern: /\"/});
+const cls = tok({name: 'class', pattern: /\.[\w\d-]+/});
 
 const space = tok({
 name: "WhiteSpace",
@@ -35,8 +36,8 @@ line_breaks: true
 
 // The order of tokens is important
 const allTokens = [
-space, RCurly, LCurly,
-LSquare, RSquare, Comma, Colon, Semicolon, eq, hash, quote, str
+space, str, cls, RCurly, LCurly,
+LSquare, RSquare, Comma, Colon, Semicolon, eq, hash, quote
 ]
 
 const SelectLexer = new Lexer(allTokens)

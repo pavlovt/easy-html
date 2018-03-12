@@ -17,103 +17,41 @@ const t = selectLexer.tokenVocabulary
 class SelectParserEmbedded extends Parser {
     constructor(input) {
         super(input, t)
-        const $ = this
+        const $ = this,
+            sub = $.SUBRULE,
+            opt = $.OPTION,
+            many = $.MANY,
+            rule = $.RULE,
+            eat = $.CONSUME;
 
-        this.selectStatement = $.RULE("selectStatement", () => {
-            let select, from, where
-
-            select = $.SUBRULE($.selectClause)
-            from = $.SUBRULE($.fromClause)
-            $.OPTION(() => {
-                where = $.SUBRULE($.whereClause)
+        this.grps = rule('grps', () => {
+            let c = []
+            many(() => {
+                c.push(sub($.grp))
             })
 
-            // Each Grammar rule can return a value, these values can be combined to create a new data structure
-            // in our case an AST.
-            return {
-                type: "SELECT_STMT",
-                selectClause: select,
-                fromClause: from,
-                // may be undefined if the OPTION was not entered.
-                whereClause: where
-            }
+            return c;
         })
 
-        this.selectClause = $.RULE("selectClause", () => {
-            const columns = []
-
-            $.CONSUME(Select)
-            $.AT_LEAST_ONE_SEP({
-                SEP: Comma,
-                DEF: () => {
-                    columns.push($.CONSUME(Identifier).image)
-                }
+        this.grp = rule('grp', () => {
+            let el, classes, attrs
+            el = eat(t.str).image
+            opt(() => {
+                classes = sub($.cls)
             })
 
-            return {
-                type: "SELECT_CLAUSE",
-                columns: columns
-            }
+            return {el, classes};
         })
 
-        this.fromClause = $.RULE("fromClause", () => {
-            let table
+        this.cls = rule('cls', () => {
+            let c = []
+            many(() => {
+                c.push(eat(t.cls).image)
+            })
 
-            $.CONSUME(From)
-            table = $.CONSUME(Identifier).image
-
-            return {
-                type: "FROM_CLAUSE",
-                table: table
-            }
+            return {name: 'class', data: c}
         })
 
-        this.whereClause = $.RULE("whereClause", () => {
-            let condition
-
-            $.CONSUME(Where)
-            condition = $.SUBRULE($.expression)
-
-            return {
-                type: "WHERE_CLAUSE",
-                condition: condition
-            }
-        })
-
-        this.expression = $.RULE("expression", () => {
-            let lhs, operator, rhs
-
-            lhs = $.SUBRULE($.atomicExpression)
-            operator = $.SUBRULE($.relationalOperator)
-            rhs = $.SUBRULE2($.atomicExpression) // note the '2' suffix to distinguish
-            // from the 'SUBRULE(atomicExpression)'
-            // 2 lines above.
-
-            return {
-                type: "EXPRESSION",
-                lhs: lhs,
-                operator: operator,
-                rhs: rhs
-            }
-        })
-
-        this.atomicExpression = $.RULE("atomicExpression", () => {
-            return $.OR([
-                { ALT: () => $.CONSUME(Integer) },
-                { ALT: () => $.CONSUME(Identifier) }
-            ]).image
-        })
-
-        this.relationalOperator = $.RULE("relationalOperator", () => {
-            return $.OR([
-                {
-                    ALT: () => $.CONSUME(GreaterThan)
-                },
-                {
-                    ALT: () => $.CONSUME(LessThan)
-                }
-            ]).image
-        })
 
         // very important to call this after all the rules have been defined.
         // otherwise the parser may not work correctly as it will lack information
@@ -133,7 +71,7 @@ module.exports = {
         parserInstance.input = lexResult.tokens
 
         // No semantic actions so this won't return anything yet.
-        const ast = parserInstance.selectStatement()
+        const ast = parserInstance.grps()
 
         if (parserInstance.errors.length > 0) {
             console.log(JSON.stringify(parserInstance.errors, null, "\t"))
