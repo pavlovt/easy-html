@@ -1,15 +1,48 @@
 const defs = require('./defs').lex
-const parser = require('./actions').toAst
+const parser = require('./rules').parse
 // console.log(parser);
 const txt = `
-div.row.zz.zz1 {
-    span.zz {}
-    span.zz1 {}
-}
-span.zz {}
+div.row.zz.zz1 @art="as fsds !$#@" :zz=qq qqq class="[{c1:q1}, c2, c3]" style="background-color: white; color: black;" .{
+    span.zz .{}.
+    span.zz1 .{}.
+}.
+span .{
+    ''zz zz''
+}.
+''qqq qqq''
+dfs
 `;
 let res = parser(txt);
 console.log(JSON.stringify(res, null, "\t"))
+if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(htmlElement(res.cst));
+
+// generate the html based on the parsers' result
+function htmlElement(data) {
+    let res = '', cls, tmp
+    data.forEach((el) => {
+        if (el.text) res += el.text.join(' ')
+        else {
+            tmp = el.attrs.find((v) => v.lhs === 'class')
+            // we may have div.z class="zz zzz"> i.e. we have to join the classes from both places
+            cls = tmp ? tmp.rhs.concat(el.classes).join(' ') : el.classes;
+            res += `<${el.el} `
+            if (cls.length > 0) res += ` class="${cls}"`
+            el.attrs.filter(v => v.lhs !== 'class').forEach(v => {
+                res += ` ${v.lhs}`
+                if (v.rhs.length > 0) res += `="${v.rhs.join(' ')}"`
+                
+            })
+            res += `>`
+            res += htmlElement(el.content)
+            res += `</${el.el}>\n`
+        }
+    })
+
+    return res;
+}
+
+
+
 // console.log(JSON.stringify(defs(txt), null, "\t"))
 // const parser = require("./actions").toAst
 /*const lex = require("../step1_lexing/step1_lexing").lex

@@ -11,12 +11,12 @@ const tokenVocabulary = {}
 const tok = chevrotain.createToken;
 const Lexer = chevrotain.Lexer;
 
-const lcurly = tok({name: "lcurly", pattern: /{/});
-const rcurly = tok({name: "rcurly", pattern: /}/});
-const lsquare = tok({name: "lsquare", pattern: /\[/});
-const rsquare = tok({name: "rsquare", pattern: /]/});
-const comma = tok({name: "comma", pattern: /,/});
-const colon = tok({name: "colon", pattern: /:/});
+const lcurly = tok({name: "lcurly", pattern: /\.{/});
+const rcurly = tok({name: "rcurly", pattern: /}\./});
+// const lsquare = tok({name: "lsquare", pattern: /\[/});
+// const rsquare = tok({name: "rsquare", pattern: /]/});
+// const comma = tok({name: "comma", pattern: /,/});
+// const colon = tok({name: "colon", pattern: /:/});
 const semicolon = tok({name: "semicolon", pattern: /;/});
 
 const eq = tok({name: 'eq', pattern: /=/});
@@ -25,7 +25,9 @@ const hash = tok({name: 'hash', pattern: /\#/});
 const str = tok({name: 'str', pattern: /:?@?[\w\d-\(\)]+/});
 const style = tok({name: 'style', pattern: /style/});
 const quote = tok({name: 'quote', pattern: /\"/});
+const squote = tok({name: 'squote', pattern: /''/});
 const cls = tok({name: 'class', pattern: /\.[\w\d-]+/});
+const allbutquote = tok({name: 'allbutquote', pattern: /[^"\s]+/});
 
 const space = tok({
 name: "WhiteSpace",
@@ -36,11 +38,13 @@ line_breaks: true
 
 // The order of tokens is important
 const allTokens = [
-space, str, cls, rcurly, lcurly,
-lsquare, rsquare, comma, colon, semicolon, eq, hash, quote
+space, str, cls, rcurly, lcurly, eq, hash, quote, squote, allbutquote
 ]
 
-const SelectLexer = new Lexer(allTokens)
+const lexer = new Lexer(allTokens, {
+    // Less verbose tokens will make the test's assertions easier to understand
+    positionTracking: "onlyOffset"
+})
 
 allTokens.forEach(tokenType => {
     tokenVocabulary[tokenType.name] = tokenType
@@ -48,6 +52,8 @@ allTokens.forEach(tokenType => {
 
 module.exports = {
     tokenVocabulary: tokenVocabulary,
+
+    lexer,
 
     lex: function(inputText) {
         const lexingResult = SelectLexer.tokenize(inputText)
