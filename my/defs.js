@@ -11,13 +11,13 @@ const tokenVocabulary = {}
 const tok = chevrotain.createToken;
 const Lexer = chevrotain.Lexer;
 
-const LCurly = tok({name: "lcurly", pattern: /{/});
-const RCurly = tok({name: "rcurly", pattern: /}/});
-const LSquare = tok({name: "lsquare", pattern: /\[/});
-const RSquare = tok({name: "rsquare", pattern: /]/});
-const Comma = tok({name: "comma", pattern: /,/});
-const Colon = tok({name: "colon", pattern: /:/});
-const Semicolon = tok({name: "semicolon", pattern: /;/});
+const lcurly = tok({name: "lcurly", pattern: /{/});
+const rcurly = tok({name: "rcurly", pattern: /}/});
+const lsquare = tok({name: "lsquare", pattern: /\[/});
+const rsquare = tok({name: "rsquare", pattern: /]/});
+const comma = tok({name: "comma", pattern: /,/});
+const colon = tok({name: "colon", pattern: /:/});
+const semicolon = tok({name: "semicolon", pattern: /;/});
 
 const eq = tok({name: 'eq', pattern: /=/});
 const dot = tok({name: 'dot', pattern: /\./});
@@ -36,8 +36,8 @@ line_breaks: true
 
 // The order of tokens is important
 const allTokens = [
-space, str, cls, RCurly, LCurly,
-LSquare, RSquare, Comma, Colon, Semicolon, eq, hash, quote
+space, str, cls, rcurly, lcurly,
+lsquare, rsquare, comma, colon, semicolon, eq, hash, quote
 ]
 
 const SelectLexer = new Lexer(allTokens)
@@ -53,7 +53,7 @@ module.exports = {
         const lexingResult = SelectLexer.tokenize(inputText)
 
         if (lexingResult.errors.length > 0) {
-            console.log(JSON.stringify(lexingResult.errors, null, "\t"))
+            // console.log(JSON.stringify(lexingResult.errors, null, "\t"))
             throw Error("lexing errors detected")
         }
 

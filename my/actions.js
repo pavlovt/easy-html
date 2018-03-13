@@ -12,46 +12,56 @@
 const selectLexer = require("./defs")
 const Parser = require("chevrotain").Parser
 const t = selectLexer.tokenVocabulary
-
+// console.log('zzzzzzzzzzzzzzzzzzzzz', t);
 // ----------------- parser -----------------
 class SelectParserEmbedded extends Parser {
     constructor(input) {
         super(input, t)
-        const $ = this,
-            sub = $.SUBRULE,
-            opt = $.OPTION,
-            many = $.MANY,
-            rule = $.RULE,
-            eat = $.CONSUME;
+        const $ = this
 
-        this.grps = rule('grps', () => {
+        /*this.expression = $.RULE("expression", () => {
+            let lhs, operator, rhs
+
+            lhs = $.CONSUME(t.str).image
+            operator = $.CONSUME(t.class).image
+
+            return {
+                type: "EXPRESSION",
+                el: lhs,
+                cls: operator,
+            }
+        })*/
+
+        this.grps = $.RULE('grps', () => {
             let c = []
-            many(() => {
-                c.push(sub($.grp))
+            $.MANY(() => {
+                c.push($.SUBRULE($.grp))
             })
 
             return c;
         })
 
-        this.grp = rule('grp', () => {
-            let el, classes, attrs
-            el = eat(t.str).image
-            opt(() => {
-                classes = sub($.cls)
+        this.grp = $.RULE('grp', () => {
+            let el, classes, attrs, content
+            el = $.CONSUME(t.str).image
+            $.OPTION(() => {
+                classes = $.SUBRULE($.cls)
             })
+            $.CONSUME(t.lcurly)
+            content = $.SUBRULE($.grps)
+            $.CONSUME(t.rcurly)
 
-            return {el, classes};
+            return {el, classes, content};
         })
 
-        this.cls = rule('cls', () => {
+        this.cls = $.RULE('cls', () => {
             let c = []
-            many(() => {
-                c.push(eat(t.cls).image)
+            $.MANY(() => {
+                c.push($.CONSUME(t.class).image.replace('.', ''))
             })
 
-            return {name: 'class', data: c}
+            return c;
         })
-
 
         // very important to call this after all the rules have been defined.
         // otherwise the parser may not work correctly as it will lack information
@@ -74,7 +84,7 @@ module.exports = {
         const ast = parserInstance.grps()
 
         if (parserInstance.errors.length > 0) {
-            console.log(JSON.stringify(parserInstance.errors, null, "\t"))
+            // console.log(JSON.stringify(parserInstance.errors, null, "\t"))
             throw Error(
                 "parsing errors detected!\n" +
                     parserInstance.errors[0].message
