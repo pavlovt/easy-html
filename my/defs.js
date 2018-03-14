@@ -13,6 +13,8 @@ const Lexer = chevrotain.Lexer;
 
 const lcurly = tok({name: "lcurly", pattern: /\.{/});
 const rcurly = tok({name: "rcurly", pattern: /}\./});
+const dlcurly = tok({name: "dlcurly", pattern: /{{/});
+const drcurly = tok({name: "drcurly", pattern: /}}/});
 // const lsquare = tok({name: "lsquare", pattern: /\[/});
 // const rsquare = tok({name: "rsquare", pattern: /]/});
 // const comma = tok({name: "comma", pattern: /,/});
@@ -22,7 +24,7 @@ const semicolon = tok({name: "semicolon", pattern: /;/});
 const eq = tok({name: 'eq', pattern: /=/});
 const dot = tok({name: 'dot', pattern: /\./});
 const hash = tok({name: 'hash', pattern: /\#/});
-const str = tok({name: 'str', pattern: /:?@?[\w\d-\(\)]+/});
+const str = tok({name: 'str', pattern: /:?@?[\w\d-\(\)\.]+/});
 const style = tok({name: 'style', pattern: /style/});
 const quote = tok({name: 'quote', pattern: /\"/});
 const squote = tok({name: 'squote', pattern: /''/});
@@ -38,7 +40,7 @@ line_breaks: true
 
 // The order of tokens is important
 const allTokens = [
-space, str, cls, rcurly, lcurly, eq, hash, quote, squote, allbutquote
+space, rcurly, lcurly, str, cls, drcurly, dlcurly, eq, hash, quote, squote, allbutquote
 ]
 
 const lexer = new Lexer(allTokens, {

@@ -44,6 +44,10 @@ class SelectParserEmbedded extends Parser {
                    {ALT: () => {
                         c.push({text: $.SUBRULE($.text)})
                    }},
+                   // if there is an expression like: {{data.title}}
+                   {ALT: () => {
+                        c.push({text: $.SUBRULE($.expression)})
+                   }},
                 ])
             })
 
@@ -74,6 +78,19 @@ class SelectParserEmbedded extends Parser {
                 ])
             })
             $.CONSUME2(t.squote)
+            return c;
+        })
+
+        this.expression = $.RULE('expression', () => {
+            let c = []
+            c.push($.CONSUME1(t.dlcurly).image)
+            $.MANY(() => {
+                $.OR([
+                   {ALT: () => c.push($.CONSUME2(t.str).image)},
+                   {ALT: () => c.push($.CONSUME5(t.allbutquote).image)}
+                ])
+            })
+            c.push($.CONSUME2(t.drcurly).image)
             return c;
         })
 
@@ -168,7 +185,8 @@ module.exports = {
         return {
             cst: cst,
             lexErrors: lexResult.errors,
-            parseErrors: parser.errors
+            parseErrors: parser.errors,
+            lexResult
         }
     },
 }
