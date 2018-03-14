@@ -1,8 +1,9 @@
 {
-    "name": "chevrotain_examples_tutorial",
-    "version": "0.1.0",
+    "name": "jsnhtml",
+    "version": "0.8.0",
+    "main": "src/index.js",
     "scripts": {
-        "test": "mocha \"step*/*spec.js\""
+        "start": "node src/main.js"
     },
     "dependencies": {
         "chevrotain": "*"
@@ -11,6 +12,5 @@
         "chai": "^3.5.0",
         "mocha": "^3.2.0",
         "lodash": "^4.17.4"
-    },
-    "private": true
+    }    
 }

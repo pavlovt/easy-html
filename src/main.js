@@ -1,5 +1,6 @@
 const defs = require('./defs').lex
 const parser = require('./rules').parse
+const builder = require('./build')
 // console.log(parser);
 const txt = `
 div.row.zz.zz1 @art="as fsds !$#@" :zz=qq qqq class="[{c1:q1}, c2, c3]" style="background-color: white; color: black;" .{
@@ -13,7 +14,7 @@ span .{
 `;
 let res = parser(txt);
 console.log(JSON.stringify(res, null, "\t"))
-if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(htmlElement(res.cst));
+if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(builder(res.cst));
 
 // generate the html based on the parsers' result
 function htmlElement(data) {
