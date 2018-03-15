@@ -12,5 +12,5 @@ module.exports = function loader(content) {
   const res = parser(content)
 
   if (res.lexErrors.length === 0 && res.parseErrors.length === 0) callback(null, builder(res.cst))
-  else callback(res)
+  else callback(res.cst)
 }
