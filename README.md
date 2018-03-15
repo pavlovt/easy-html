@@ -12,11 +12,11 @@ div.row {
 
             select.tst-z v-model=choose {
                 option v-for="v in options" :value="v.id" {
-                    {{v.title}}
+                    ''title: '' {{v.title}}
                 }
             }
 
-            button.btn.btn-primary { Submit }
+            button.btn.btn-primary { ''Submit'' }
         }
     }
 }

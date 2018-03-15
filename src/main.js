@@ -8,9 +8,8 @@ div.row.zz.zz1 @art="as fsds !$#@" :zz=qq qqq class="[{c1:q1}, c2, c3]" style="b
     span.zz1 .{}.
 }.
 span .{
-    {{data.title}}
+    ''title: '' {{data.title}}
 }.
-''qqq qqq''
 `;
 let res = parser(txt);
 console.log(JSON.stringify(res, null, "\t"))
