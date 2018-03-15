@@ -1,6 +1,8 @@
-# jhtml
-Json-like template language exported to html
+# Easy to write and understand templating language
+Json-like template language exported to html.
+
 The main idea is to be able to write clear and readable code because html contains too much boilerplate and it is very hard to understand its meaning.
+
 The language should be able to convert this:
 ```
 div.row {
@@ -36,7 +38,9 @@ into this:
 ```
 ## Why another template language?
 Why create another template language when we have others like [jade](http://jade-lang.com/) and [pug](https://github.com/pugjs/pug)?
+
 From my point of view python-like languages look simple but actually are very hard to read and understand. And you can never be sure where the code block ends :)
+
 For me the difference between pug and jhtml is like the difference between sass and scss (guess why no one uses sass :))
 
 The language will not have any logical constructs (like "if", "foreach") because it is aimed to be used with Vue.js or Angular.
