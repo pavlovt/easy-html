@@ -2,7 +2,7 @@ const defs = require('./defs').lex
 const parser = require('./rules').parse
 const builder = require('./build')
 // console.log(parser);
-const txt = `
+let txt = `
 div.row.zz.zz1 @art="as fsds !$#@" :zz=qq qqq class="[{c1:q1}, c2, c3]" style="background-color: white; color: black;" .{
     span.zz .{}.
     span.zz1 .{}.
@@ -11,6 +11,30 @@ span .{
     ''title: '' {{data.title}}
 }.
 `;
+/*txt = `
+article.col-4 .{
+    h2 .{ {{data.name}} }.
+    p.desc .{ {{data.desc}} }.
+    span .{
+      ''fb: '' {{data.fb}}
+    }.
+    span .{
+      ''tweet: '' {{data.tweet}}
+    }.
+    button.btn.btn-info @click=fb .{ ''fb'' }.
+    button.btn.btn-info @click=tweet .{ ''tweet'' }.
+    footer .{ {{data.author}} }.
+  }.
+`*/
+/*txt = `
+div .{
+    div.alert.alert-info role=alert .{
+      section.row .{
+        art v-for="art in articles" :key=art.name :data=art .{}.
+      }.
+    }.
+  }.
+`*/
 let res = parser(txt);
 console.log(JSON.stringify(res, null, "\t"))
 if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(builder(res.cst));

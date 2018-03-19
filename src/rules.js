@@ -57,7 +57,14 @@ class SelectParserEmbedded extends Parser {
         this.grp = $.RULE('grp', () => {
             let el, classes, attrs, content
             el = $.CONSUME(t.str).image
-            classes = $.SUBRULE($.cls)
+            // check if there are classes: div.class1.class2
+            el = el.split('.')
+            // separate the classes
+            classes = el.splice(1, el.length-1)
+            // leave only the element
+            el= el[0]
+
+            // classes = $.SUBRULE($.cls)
             $.OPTION(() => {
                 attrs = $.SUBRULE($.attrs)
             })
@@ -87,7 +94,8 @@ class SelectParserEmbedded extends Parser {
             $.MANY(() => {
                 $.OR([
                    {ALT: () => c.push($.CONSUME2(t.str).image)},
-                   {ALT: () => c.push($.CONSUME5(t.allbutquote).image)}
+                   {ALT: () => c.push($.CONSUME5(t.allbutquote).image)},
+                   {ALT: () => c.push($.CONSUME5(t.class).image)}
                 ])
             })
             c.push($.CONSUME2(t.drcurly).image)
