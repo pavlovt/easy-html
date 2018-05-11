@@ -28,7 +28,7 @@ into this:
         <form :submit="submit()">
             <input type="number" v-model="zzz" :class="[{q: 'zz'}, zz, dd]" />
             <select v-model="choose" class="tst">
-                <option v-for="v in options" :value="v.id">{{v.title}}</option>
+                <option v-for="v in options" :value="v.id">title: {{v.title}}</option>
             </select>
 
             <button class="btn btn-primary">Submit</button>
