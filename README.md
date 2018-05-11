@@ -3,20 +3,20 @@ Json-like template language exported to html.
 
 The main idea is to be able to write clear and readable code because html contains too much boilerplate and it is very hard to understand its meaning.
 
-The language should be able to convert this:
+The language is able to convert this:
 ```
 div.row {
     div.col {
         form :submit=submit() {
-            input type=number v-model=zzz
+            input type=number v-model=zzz :class="[{q: 'zz'}, zz, dd]" {}
 
             select.tst-z v-model=choose {
                 option v-for="v in options" :value="v.id" {
-                    ''title: '' {{v.title}}
+                    'title: {{v.title}}'
                 }
             }
 
-            button.btn.btn-primary { ''Submit'' }
+            button.btn.btn-primary { 'Submit' }
         }
     }
 }
@@ -26,7 +26,7 @@ into this:
 <div class="row">
     <div class="col">
         <form :submit="submit()">
-            <input type="number" v-model="zzz" />
+            <input type="number" v-model="zzz" :class="[{q: 'zz'}, zz, dd]" />
             <select v-model="choose" class="tst">
                 <option v-for="v in options" :value="v.id">{{v.title}}</option>
             </select>

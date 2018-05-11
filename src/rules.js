@@ -48,6 +48,7 @@ class SelectParserEmbedded extends Parser {
                    {ALT: () => {
                         c.push({text: $.SUBRULE($.expression)})
                    }},
+                   {ALT: () => c.push({space: $.CONSUME5(t.space).image})},
                 ])
             })
 
@@ -64,10 +65,14 @@ class SelectParserEmbedded extends Parser {
             // leave only the element
             el= el[0]
 
-            // classes = $.SUBRULE($.cls)
-            $.OPTION(() => {
+            $.OPTION(() => {$.CONSUME(t.space)})
+
+            $.OPTION1(() => {
                 attrs = $.SUBRULE($.attrs)
             })
+
+            $.OPTION2(() => {$.CONSUME1(t.space)})
+
             $.CONSUME(t.lcurly)
             content = $.SUBRULE($.grps)
             $.CONSUME(t.rcurly)
@@ -80,8 +85,16 @@ class SelectParserEmbedded extends Parser {
             $.CONSUME1(t.squote)
             $.MANY(() => {
                 $.OR([
-                   {ALT: () => c.push($.CONSUME2(t.str).image)},
-                   {ALT: () => c.push($.CONSUME5(t.allbutquote).image)}
+                   {ALT: () => c.push($.CONSUME1(t.str).image)},
+                   {ALT: () => c.push($.CONSUME2(t.allbutquote).image)},
+                   {ALT: () => c.push($.CONSUME3(t.esquote).image)},
+                   {ALT: () => c.push($.CONSUME4(t.quote).image)},
+                   {ALT: () => c.push($.CONSUME5(t.eq).image)},
+                   {ALT: () => c.push($.CONSUME6(t.lcurly).image)},
+                   {ALT: () => c.push($.CONSUME7(t.dlcurly).image)},
+                   {ALT: () => c.push($.CONSUME5(t.rcurly).image)},
+                   {ALT: () => c.push($.CONSUME5(t.drcurly).image)},
+                   {ALT: () => c.push($.CONSUME5(t.space).image)},
                 ])
             })
             $.CONSUME2(t.squote)
@@ -95,21 +108,22 @@ class SelectParserEmbedded extends Parser {
                 $.OR([
                    {ALT: () => c.push($.CONSUME2(t.str).image)},
                    {ALT: () => c.push($.CONSUME5(t.allbutquote).image)},
-                   {ALT: () => c.push($.CONSUME5(t.class).image)}
+                   {ALT: () => $.CONSUME5(t.space)},
+                   // {ALT: () => c.push($.CONSUME5(t.class).image)}
                 ])
             })
             c.push($.CONSUME2(t.drcurly).image)
             return c;
         })
 
-        this.cls = $.RULE('cls', () => {
+        /*this.cls = $.RULE('cls', () => {
             let c = []
             $.MANY(() => {
                 c.push($.CONSUME(t.class).image.replace('.', ''))
             })
 
             return c;
-        })
+        })*/
 
         this.attrs = $.RULE('attrs', () => {
             let c = [], res;
@@ -122,19 +136,29 @@ class SelectParserEmbedded extends Parser {
                     $.OR1([
                         // if there are quotes then execute this
                        {ALT: () => {
+                            $.OPTION2(() => {$.CONSUME2(t.space)})
                             $.CONSUME1(t.eq)
+                            $.OPTION3(() => {$.CONSUME3(t.space)})
                             $.CONSUME3(t.quote)
                             $.MANY2(() => {
                                 $.OR2([
                                    {ALT: () => rhs.push($.CONSUME2(t.str).image)},
-                                   {ALT: () => rhs.push($.CONSUME5(t.allbutquote).image)}
+                                   {ALT: () => rhs.push($.CONSUME5(t.allbutquote).image)},
+                                   {ALT: () => rhs.push($.CONSUME(t.lcurly).image)},
+                                   {ALT: () => rhs.push($.CONSUME(t.rcurly).image)},
+                                   {ALT: () => rhs.push($.CONSUME(t.dlcurly).image)},
+                                   {ALT: () => rhs.push($.CONSUME(t.drcurly).image)},
+                                   {ALT: () => rhs.push($.CONSUME(t.squote).image)},
+                                   {ALT: () => $.CONSUME4(t.space)}
                                 ])
                             })
                             $.CONSUME4(t.quote)
                        }},
                        // if no quotes the attribute can have only one right hand side value
                        {ALT: () => {
+                            $.OPTION4(() => {$.CONSUME5(t.space)})
                             $.CONSUME2(t.eq)
+                            $.OPTION5(() => {$.CONSUME6(t.space)})
                             $.OR3([
                                {ALT: () => rhs.push($.CONSUME6(t.str).image)},
                                {ALT: () => rhs.push($.CONSUME7(t.allbutquote).image)}
@@ -142,6 +166,7 @@ class SelectParserEmbedded extends Parser {
                        }},
                     ])
                 })
+                $.OPTION(() => {$.CONSUME1(t.space)})
 
                 return {lhs, rhs}
             })
@@ -188,7 +213,10 @@ module.exports = {
         parser.input = lexResult.tokens
 
         // any top level rule may be used as an entry point
-        const cst = parser.grps()
+        let cst = '';
+        try {
+            cst = parser.grps()
+        } catch(err) {}
 
         return {
             cst: cst,

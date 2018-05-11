@@ -2,7 +2,8 @@
 module.exports= function htmlElement(data) {
     let res = '', cls, tmp
     data.forEach((el) => {
-        if (el.text) res += el.text.join(' ')
+        if (el.space) res += el.space
+        else if (el.text) res += el.text.join('')
         else {
             tmp = el.attrs.find((v) => v.lhs === 'class')
             // we may have div.z class="zz zzz"> i.e. we have to join the classes from both places

@@ -3,13 +3,21 @@ const parser = require('./rules').parse
 const builder = require('./build')
 // console.log(parser);
 let txt = `
-div.row.zz.zz1 @art="as fsds !$#@" :zz=qq qqq class="[{c1:q1}, c2, c3]" style="background-color: white; color: black;" .{
-    span.zz .{}.
-    span.zz1 .{}.
-}.
-span .{
-    ''title: '' {{data.title}}
-}.
+div.row {
+    div.col {
+        form :submit=submit() {
+            input type=number v-model=zzz :class="[{q: 'zz'}, zz, dd]" {}
+
+            select.tst-z v-model=choose {
+                option v-for="v in options" :value="v.id" {
+                    'title: {{v.title}}'
+                }
+            }
+
+            button.btn.btn-primary { 'Submit' }
+        }
+    }
+}
 `;
 /*txt = `
 article.col-4 .{
@@ -40,7 +48,7 @@ console.log(JSON.stringify(res, null, "\t"))
 if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(builder(res.cst));
 
 // generate the html based on the parsers' result
-function htmlElement(data) {
+/*function htmlElement(data) {
     let res = '', cls, tmp
     data.forEach((el) => {
         if (el.text) res += el.text.join(' ')
