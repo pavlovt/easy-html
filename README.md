@@ -1,5 +1,5 @@
 # Easy to write and understand templating language
-Simplified html-like template language exported to html.
+Simple template language which can be converted to html. It is intended to be used with Vue or Angular.
 
 The main idea is to be able to write clear and readable code because html contains too much boilerplate and it is very hard to understand its meaning.
 
@@ -48,8 +48,8 @@ Why create another template language when we have others like [jade](http://jade
 
 From my point of view python-like languages look simple but actually are very hard to read and understand. And you can never be sure where the code block ends :)
 
-For me the difference between pug and jhtml is like the difference between sass and scss (guess why no one uses sass :))
+For me the difference between pug and easy-html is like the difference between sass and scss (guess why no one uses sass :))
 
-The language will not have any logical constructs (like "if", "foreach") because it is aimed to be used with Vue.js or Angular.
+The language will not have any logical constructs (like "if", "foreach") because it is aimed to be used with Vue or Angular.
 
 The language is not ready yet but I am working actively on it.
