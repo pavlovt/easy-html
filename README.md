@@ -1,5 +1,5 @@
 # Easy to write and understand templating language
-Json-like template language exported to html.
+Simplified html-like template language exported to html.
 
 The main idea is to be able to write clear and readable code because html contains too much boilerplate and it is very hard to understand its meaning.
 
@@ -36,6 +36,13 @@ into this:
     </div>
 </div>
 ```
+## Main rules
+- There are two possible elements: html element or text
+- The html element always ends with {} and inside are all elements or text it contains
+- Text is always inside single quotes
+- The html emenet may have classes added directly to the element (div.some-class {}) or as class attribute (div class=some-class {})
+- The html element may have attributes. If the attribute value does not contain space you can write it without double quotes (div id=my-id {}) (div style="width: 100%; padding: 0;" {})
+
 ## Why another template language?
 Why create another template language when we have others like [jade](http://jade-lang.com/) and [pug](https://github.com/pugjs/pug)?
 
