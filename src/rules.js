@@ -56,8 +56,17 @@ class SelectParserEmbedded extends Parser {
         })
 
         this.grp = $.RULE('grp', () => {
-            let el, classes, attrs, content
+            let el, classes, attrs, content, type = 'element'
             el = $.CONSUME(t.str).image
+            // the element starts with class: .row instead of div.row
+            // in this case add the defau;lt element - div
+            if (el[0] === '.') el = 'div' + el
+            // this is a macros
+            if (el[0] === '!') {
+              type = 'macros'
+              el = el.substr(1)
+            }
+
             // check if there are classes: div.class1.class2
             el = el.split('.')
             // separate the classes
@@ -77,7 +86,7 @@ class SelectParserEmbedded extends Parser {
             content = $.SUBRULE($.grps)
             $.CONSUME(t.rcurly)
 
-            return {el, classes, content, attrs};
+            return {el, classes, content, attrs, type};
         })
 
         this.text = $.RULE('text', () => {

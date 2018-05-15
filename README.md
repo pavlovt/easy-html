@@ -11,7 +11,7 @@ div.row {
             input type=number v-model=zzz :class="[{q: 'zz'}, zz, dd]" {}
 
             select.tst-z v-model=choose {
-                option v-for="v in options" :value=v.id {
+                option v-for="v in options" :value="v.id" {
                     'title: {{v.title}}'
                 }
             }
@@ -37,9 +37,8 @@ into this:
 </div>
 ```
 ## Main rules
-- This is just an html in disguise - just more simplified and less verbose (You don't have to think of it as another language)
 - There are two possible elements: html element or text
-- The html element always ends with {} (if you forget them this element will include all other elements until it finds {}) and inside are all elements or text it contains
+- The html element always ends with {} and inside are all elements or text it contains
 - Text is always inside single quotes
 - The html emenet may have classes added directly to the element (div.some-class {}) or as class attribute (div class=some-class {})
 - The html element may have attributes. If the attribute value does not contain space you can write it without double quotes (div id=my-id {}) (div style="width: 100%; padding: 0;" {})
