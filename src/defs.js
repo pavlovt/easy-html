@@ -26,7 +26,7 @@ const cls = tok({name: 'class', pattern: /\.[\w\d-]+/});
 
 const eq = tok({name: 'eq', pattern: /=/});
 // holds elements and classes
-const str = tok({name: 'str', pattern: /:?@?[\w\d-\(\)\.!]+/});
+const str = tok({name: 'str', pattern: /:?@?[\w\d-\(\)\[\]\*\.!]+/});
 const style = tok({name: 'style', pattern: /style/});
 const quote = tok({name: 'quote', pattern: /"/});
 // escaped double quote

@@ -8,9 +8,13 @@ div.row {
     div.col {
         form :submit=submit() {
             input type=number v-model=zzz :class="[{q: 'zz'}, zz, dd]" {}
-            !input e-type=number e-v-model=zzz label="qq" l-class="lc" w-class="wc" e-class="ec" e-name="zzz" {}
+            !input e-type=number e-v-model=zzz label="qq" l-class="lc" w-class="wc" e-class="ec" e-name="zzz" {
+                !input e-type=number e-v-model=zzz label="qq" l-class="lc" w-class="wc" e-class="ec" e-name="zzz" {
+                    'Show me!'
+                }
+            }
 
-            select.tst-z v-model=choose {
+            select.tst-z [(*ngModel)] {
                 option v-for="v in options" :value="v.id" {
                     'title: {{v.title}}'
                 }
