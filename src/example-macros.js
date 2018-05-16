@@ -1,12 +1,14 @@
 module.exports =  {
-	input(data) {
-		// console.log('arguments!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', JSON.stringify(data))
+	input(data, bilder, options) {
+		// example: data = {"el":"input","classes":[],"content":[],"attrs":[{"lhs":"e-type","rhs":["number"]},{"lhs":"e-v-model","rhs":["zzz"]},{"lhs":"label","rhs":["qq"]},{"lhs":"l-class","rhs":["lc"]},{"lhs":"w-class","rhs":["wc"]},{"lhs":"e-class","rhs":["ec"]},{"lhs":"e-name","rhs":["zzz"]}],"type":"macros"}
 		const args = data.attrs;
 
 		return `
 			<div class="form-group" ${this.attrs('w-', args)}>
 				<label ${this.attrs('l-', args)}>${this.attr('label', args)}</label>
 				<input  ${this.attrs('e-', args)} />
+				<!-- build the children of the macros if any - they can be a html or another macros -->
+				${bilder(data.content, options)}
 			</div>
 		`;
 	},

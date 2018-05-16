@@ -9,7 +9,7 @@ module.exports= function htmlElement(data, options) {
         if (el.type == 'macros') {
             if (!options) throw `easy-html parser: ${el.el} macros is used but no options are provided`
             if (options && !options.macros[el.el]) throw `easy-html parser: ${el.el} macros does not exist in options.macros`
-            else res += options.macros[el.el](el)
+            else res += options.macros[el.el](el, htmlElement, options)
         }
         else if (el.text) res += el.text.join('')
         else {
