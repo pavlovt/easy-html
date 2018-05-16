@@ -1,6 +1,11 @@
 # Easy to write and understand templating language
 Simple template language which can be converted to html. It is intended to be used with Vue or Angular.
 
+## Installation
+Check the [webpack or parcel installation](https://github.com/pavlovt/easy-html/webpack.md)
+
+
+## Description
 The main idea is to be able to write clear and readable code because html contains too much boilerplate and it is very hard to understand its meaning.
 
 The language is able to convert this:
@@ -36,7 +41,7 @@ into this:
     </div>
 </div>
 ```
-## Main rules
+## Rules
 - There are two possible elements: html element or text
 - The html element always ends with {} and inside are all elements or text it contains
 - Text is always inside single quotes
