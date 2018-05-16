@@ -1,6 +1,7 @@
 // generate the html based on the parsers' result
 module.exports= function htmlElement(data, options) {
-    console.log('parse data', JSON.stringify(data))
+    // console.log('parse data', JSON.stringify(data))
+    
     let res = '', cls, tmp
     data.forEach((el) => {
         el.attrs = el.attrs || [];
@@ -26,7 +27,7 @@ module.exports= function htmlElement(data, options) {
                 
             })
             res += `>`
-            res += htmlElement(el.content)
+            res += htmlElement(el.content, options)
             res += `</${el.el}>\n`
         }
     })
