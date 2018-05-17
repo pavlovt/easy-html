@@ -1,19 +1,23 @@
-'use strict';
 const parser = require('./rules').parse
-const builder = require('./build');
-const loaderUtils = require("loader-utils");
+const builder = require('./build')
 
 /**
- * Main function
- * @param   {String}  content   jhtml file content
+ * Converts easy-html to html
+ * @param {String} content easy-html content
+ * @param {Object} options options given in the webpack or brunch config files (providing macros, etc.)
+ * @return {Object} {res, content} - 'res' is the parsing result and 'content' is the generated html
  */
-module.exports = function loader(content, map) {
-  const options = loaderUtils.getOptions(this);
-
-  this.cacheable();
-
+function loader(content, options) {
   const res = parser(content)
 
-  if (res.lexErrors.length === 0 && res.parseErrors.length === 0) this.callback(null, builder(res.cst, options), map)
-  else this.callback(res.cst)
+  var ret = {res: res}
+  if (res.lexErrors.length === 0 && res.parseErrors.length === 0) ret.content = builder(res.cst, options)
+
+  return ret
 }
+
+// return just the loader but add the parser and the builder in case that they are needed
+loader.parser = parser
+loader.builder = builder
+
+module.exports = loader
