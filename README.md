@@ -10,18 +10,18 @@ The main idea is to be able to write clear and readable code because html contai
 
 The language is able to convert this:
 ```
-div.row {
-    div.col {
-        form :submit=submit() {
-            input type=number v-model=zzz :class="[{q: 'zz'}, zz, dd]" {}
-
-            select.tst-z v-model=choose {
-                option v-for="v in options" :value="v.id" {
-                    'title: {{v.title}}'
-                }
+.row {
+    .col {
+        form {
+            .form-group {
+                label  { 'Email address' }
+                input.form-control type=email placeholder="Enter email" {}
             }
-
-            button.btn.btn-primary { 'Submit' }
+            .form-group {
+                label  { 'Password' }
+                input.form-control type=password placeholder=Password {}
+            }
+            button.btn.btn-primary type=submit { 'Submit' }
         }
     }
 }
@@ -30,19 +30,22 @@ into this:
 ```html
 <div class="row">
     <div class="col">
-        <form :submit="submit()">
-            <input type="number" v-model="zzz" :class="[{q: 'zz'}, zz, dd]" />
-            <select v-model="choose" class="tst">
-                <option v-for="v in options" :value="v.id">title: {{v.title}}</option>
-            </select>
-
-            <button class="btn btn-primary">Submit</button>
+        <form>
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>
 ```
 ## Rules
-- There are two possible elements: html element or text
+- There are three possible elements: html element, text or [macros](macros.md)
 - The html element always ends with {} and inside are all elements or text it contains
 - Text is always inside single quotes
 - The html emenet may have classes added directly to the element (div.some-class {}) or as class attribute (div class=some-class {})
