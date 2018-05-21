@@ -1,3 +1,4 @@
+
 # Easy to write and understand templating language
 Simple template language which can be converted to html. It is intended to be used with Vue or Angular.
 
@@ -48,16 +49,24 @@ into this:
 - There are three possible elements: html element, text or [macros](macros.md)
 - The html element always ends with {} and inside are all elements or text it contains
 - Text is always inside single quotes
-- The html emenet may have classes added directly to the element (div.some-class {}) or as class attribute (div class=some-class {})
+- The html element may be written explicitely (div.row {}) or implicitely (.row {}) in this case it will be assumed that the element is div
+- The html element may have classes added directly to the element (div.some-class {}) or as class attribute (div class=some-class {}) or even both of them
 - The html element may have attributes. If the attribute value does not contain space you can write it without double quotes (div id=my-id {}) (div style="width: 100%; padding: 0;" {})
 
 ## Why another template language?
 Why create another template language when we have others like [jade](http://jade-lang.com/) and [pug](https://github.com/pugjs/pug)?
 
-From my point of view python-like languages look simple but actually are very hard to read and understand. And you can never be sure where the code block ends :)
+For me the difference between pug and easy-html is like the difference between sass and scss - being able to explicitely define where the code block ends makes a huge difference in readability and maintainability.
 
-For me the difference between pug and easy-html is like the difference between sass and scss (guess why no one uses sass :))
+The language will not have any logical constructs (like "if", "foreach") because it is aimed to be used with Vue or Angular but macros can be used to overcome Angular 2+ limitations (for example transferring multiple attributes to an inner element without defining each one of them).
 
-The language will not have any logical constructs (like "if", "foreach") because it is aimed to be used with Vue or Angular.
+## Usage
+The best way to use easy-html is in integration with [Webpack](https://github.com/pavlovt/easy-html-webpack-loader) but it can also be used directly:
+```js
+const parser = require('easy-html')
+const ret = parser(`.row {}`, options)
+// will output: <div class="row"></div>
+console.log(ret)
+```
 
-The language is not ready yet but I am working actively on it.
+Please read the [Webpack integration](https://github.com/pavlovt/easy-html-webpack-loader) for more details on how to use it with Angular or Vue.
