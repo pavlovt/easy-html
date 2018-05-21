@@ -3,7 +3,7 @@
 Simple template language which can be converted to html. It is intended to be used with Vue or Angular.
 
 ## Installation
-Check the [webpack or parcel installation](https://github.com/pavlovt/easy-html/webpack.md)
+Check the [Webpack integration](https://github.com/pavlovt/easy-html-webpack-loader) for more details.
 
 
 ## Description
