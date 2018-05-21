@@ -64,9 +64,14 @@ The language will not have any logical constructs (like "if", "foreach") because
 The best way to use easy-html is in integration with [Webpack](https://github.com/pavlovt/easy-html-webpack-loader) but it can also be used directly:
 ```js
 const parser = require('easy-html')
-const ret = parser(`.row {}`, options)
+const ret = parser(`.row {}`)
 // will output: <div class="row"></div>
 console.log(ret)
 ```
 
 Please read the [Webpack integration](https://github.com/pavlovt/easy-html-webpack-loader) for more details on how to use it with Angular or Vue.
+
+
+## License
+
+MIT (http://www.opensource.org/licenses/mit-license.php)
