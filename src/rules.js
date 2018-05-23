@@ -49,6 +49,12 @@ class SelectParserEmbedded extends Parser {
                         c.push({text: $.SUBRULE($.expression)})
                    }},
                    {ALT: () => c.push({space: $.CONSUME5(t.space).image})},
+                   // get the line comment
+                   {ALT: () => c.push({comment: ['<!--', $.CONSUME5(t.linecom).image.substr(2), '-->']})},
+                   // multiline comment
+                   {ALT: () => {
+                        c.push({comment: $.SUBRULE($.comment)})
+                   }},
                 ])
             })
 
@@ -96,7 +102,7 @@ class SelectParserEmbedded extends Parser {
                 $.OR([
                    {ALT: () => c.push($.CONSUME1(t.str).image)},
                    {ALT: () => c.push($.CONSUME2(t.allbutquote).image)},
-                   {ALT: () => c.push($.CONSUME3(t.esquote).image)},
+                   {ALT: () => {$.CONSUME3(t.esquote); c.push("'")}},
                    {ALT: () => c.push($.CONSUME4(t.quote).image)},
                    {ALT: () => c.push($.CONSUME5(t.eq).image)},
                    {ALT: () => c.push($.CONSUME6(t.lcurly).image)},
@@ -107,6 +113,29 @@ class SelectParserEmbedded extends Parser {
                 ])
             })
             $.CONSUME2(t.squote)
+            return c;
+        })
+
+        this.comment = $.RULE('comment', () => {
+            let c = []
+            $.CONSUME1(t.lcom)
+            c.push('<!--')
+            $.MANY(() => {
+                $.OR([
+                   {ALT: () => c.push($.CONSUME1(t.str).image)},
+                   {ALT: () => c.push($.CONSUME2(t.allbutquote).image)},
+                   {ALT: () => {$.CONSUME3(t.esquote); c.push("'")}},
+                   {ALT: () => c.push($.CONSUME4(t.quote).image)},
+                   {ALT: () => c.push($.CONSUME5(t.eq).image)},
+                   {ALT: () => c.push($.CONSUME6(t.lcurly).image)},
+                   {ALT: () => c.push($.CONSUME7(t.dlcurly).image)},
+                   {ALT: () => c.push($.CONSUME5(t.rcurly).image)},
+                   {ALT: () => c.push($.CONSUME5(t.drcurly).image)},
+                   {ALT: () => c.push($.CONSUME5(t.space).image)},
+                ])
+            })
+            $.CONSUME2(t.rcom)
+            c.push('-->')
             return c;
         })
 

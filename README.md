@@ -45,13 +45,34 @@ into this:
     </div>
 </div>
 ```
-## Rules
-- There are three possible elements: html element, text or [macros](macros.md)
+## Language Rules
+- This is a standard html without the boilerplate - it is not a completely different language
+- There are four possible elements: html element, text, comment or [macros](macros.md)
+### HTML element rules
 - The html element always ends with {} and inside are all elements or text it contains
-- Text is always inside single quotes
-- The html element may be written explicitely (div.row {}) or implicitely (.row {}) in this case it will be assumed that the element is div
+- The html element may be written explicitely (div.row {}) or implicitely (.row {}) in this case it will be assumed that the element is div (in both cases the result will be: <div class="row"></div>)
 - The html element may have classes added directly to the element (div.some-class {}) or as class attribute (div class=some-class {}) or even both of them
 - The html element may have attributes. If the attribute value does not contain space you can write it without double quotes (div id=my-id {}) (div style="width: 100%; padding: 0;" {})
+### Text rules
+- Text is always inside single quotes (if you want to use single quote inside it you need to write it as \\' - e.g. 'my name is \\'John\\' ')
+### Comment rules
+You may use line comments
+```
+// comment
+.row {}
+```
+or block comments
+```
+/*
+  comment
+ */
+.row {}
+```
+both of them will be converted to:
+```html
+<!-- line comment -->
+<div class="row"></div>
+```
 
 ## Why another template language?
 Why create another template language when we have others like [jade](http://jade-lang.com/) and [pug](https://github.com/pugjs/pug)?
@@ -70,6 +91,9 @@ console.log(ret)
 ```
 
 Please read the [Webpack integration](https://github.com/pavlovt/easy-html-webpack-loader) for more details on how to use it with Angular or Vue.
+
+## Syntax highlighting
+There are basic syntax highlighters for [Sublime Text 3](https://github.com/pavlovt/easy-html-sublime-syntax) and [Visual Studio Code](https://github.com/pavlovt/easy-html-vscode-syntax)
 
 
 ## License

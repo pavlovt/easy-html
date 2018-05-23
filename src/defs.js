@@ -35,6 +35,9 @@ const squote = tok({name: 'squote', pattern: /'/});
 // escaped single quote
 const esquote = tok({name: 'esquote', pattern: /\\'/});
 const allbutquote = tok({name: 'allbutquote', pattern: /[^"'\s]+/});
+const linecom = tok({name: 'linecom', pattern: /\/\/.*/});
+const lcom = tok({name: 'lcom', pattern: /\/\*/});
+const rcom = tok({name: 'rcom', pattern: /\*\//});
 
 const space = tok({
 name: "space",
@@ -45,7 +48,7 @@ line_breaks: true
 
 // The order of tokens is important
 const allTokens = [
-space, drcurly, dlcurly, rcurly, lcurly, eq, equote, quote, esquote, squote, str, allbutquote
+linecom, lcom, rcom, space, drcurly, dlcurly, rcurly, lcurly, eq, equote, quote, esquote, squote, str, allbutquote
 ]
 
 const lexer = new Lexer(allTokens, {

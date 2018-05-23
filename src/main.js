@@ -4,6 +4,10 @@ const builder = require('./build')
 const macros = require('./example-macros')
 // console.log(parser);
 let txt = `
+'zzz\\' zz: zz'
+/*
+    Big comment
+ */
 div.row {
     div.col {
         form :submit=submit() {
@@ -13,7 +17,7 @@ div.row {
                     'Show me!'
                 }
             }
-
+            // line comment
             select.tst-z [(*ngModel)] {
                 option v-for="v in options" :value="v.id" {
                     'title: {{v.title}}'
@@ -25,7 +29,7 @@ div.row {
     }
 }
 `;
-
+console.log(txt)
 let res = parser(txt);
 console.log(JSON.stringify(res, null, "\t"))
 if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(builder(res.cst, {macros}));
