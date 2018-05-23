@@ -4,7 +4,7 @@ const builder = require('./build')
 const macros = require('./example-macros')
 // console.log(parser);
 let txt = `
-'zzz\\' zz: zz'
+'zzz\\' "zz": zz'
 /*
     Big comment
  */
@@ -18,7 +18,7 @@ div.row {
                 }
             }
             // line comment
-            select.tst-z [(*ngModel)] {
+            select.tst-z [(*ngModel)] v="l'l ll lll" {
                 option v-for="v in options" :value="v.id" {
                     'title: {{v.title}}'
                 }

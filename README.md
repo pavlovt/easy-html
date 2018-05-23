@@ -70,7 +70,7 @@ or block comments
 ```
 both of them will be converted to:
 ```html
-<!-- line comment -->
+<!-- comment -->
 <div class="row"></div>
 ```
 
