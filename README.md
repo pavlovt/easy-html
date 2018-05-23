@@ -50,7 +50,7 @@ into this:
 - There are four possible elements: html element, text, comment or [macros](macros.md)
 ### HTML element rules
 - The html element always ends with {} and inside are all elements or text it contains
-- The html element may be written explicitely (div.row {}) or implicitely (.row {}) in this case it will be assumed that the element is div (in both cases the result will be: <div class="row"></div>)
+- The html element may be written explicitely (div.row {}) or implicitely (.row {}) in this case it will be assumed that the element is div (in both cases the result will be: &lt;div class=&quot;row&quot;&gt;&lt;/div&gt;)
 - The html element may have classes added directly to the element (div.some-class {}) or as class attribute (div class=some-class {}) or even both of them
 - The html element may have attributes. If the attribute value does not contain space you can write it without double quotes (div id=my-id {}) (div style="width: 100%; padding: 0;" {})
 ### Text rules
