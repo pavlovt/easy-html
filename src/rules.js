@@ -61,7 +61,9 @@ class SelectParserEmbedded extends Parser {
             return c;
         })
 
+        // html element
         this.grp = $.RULE('grp', () => {
+          // console.log('element')
             let el, classes, attrs, content, type = 'element'
             el = $.CONSUME(t.str).image
             // the element starts with class: .row instead of div.row
@@ -174,6 +176,7 @@ class SelectParserEmbedded extends Parser {
                     $.OR1([
                         // if there are quotes then execute this
                        {ALT: () => {
+                        // console.log('attr with q')
                             $.OPTION2(() => {$.CONSUME2(t.space)})
                             $.CONSUME1(t.eq)
                             $.OPTION3(() => {$.CONSUME3(t.space)})
@@ -187,20 +190,30 @@ class SelectParserEmbedded extends Parser {
                                    {ALT: () => rhs.push($.CONSUME(t.dlcurly).image)},
                                    {ALT: () => rhs.push($.CONSUME(t.drcurly).image)},
                                    {ALT: () => rhs.push($.CONSUME(t.squote).image)},
-                                   {ALT: () => $.CONSUME4(t.space)}
+                                   {ALT: () => {$.CONSUME5(t.esquote); rhs.push("'")}},
+                                   {ALT: () => rhs.push($.CONSUME4(t.space).image)}
                                 ])
                             })
                             $.CONSUME4(t.quote)
                        }},
                        // if no quotes the attribute can have only one right hand side value
                        {ALT: () => {
+                            // console.log('attr no q')
                             $.OPTION4(() => {$.CONSUME5(t.space)})
                             $.CONSUME2(t.eq)
                             $.OPTION5(() => {$.CONSUME6(t.space)})
-                            $.OR3([
-                               {ALT: () => rhs.push($.CONSUME6(t.str).image)},
-                               {ALT: () => rhs.push($.CONSUME7(t.allbutquote).image)}
-                            ])
+                            $.MANY3(() => {
+                              $.OR3([
+                                 {ALT: () => rhs.push($.CONSUME3(t.str).image)},
+                                 {ALT: () => rhs.push($.CONSUME4(t.allbutquote).image)},
+                                 {ALT: () => rhs.push($.CONSUME5(t.lcurly).image)},
+                                 {ALT: () => rhs.push($.CONSUME5(t.rcurly).image)},
+                                 {ALT: () => rhs.push($.CONSUME7(t.dlcurly).image)},
+                                 {ALT: () => rhs.push($.CONSUME7(t.drcurly).image)},
+                                 {ALT: () => rhs.push($.CONSUME8(t.squote).image)},
+                                 {ALT: () => {$.CONSUME9(t.esquote); rhs.push("'")}},
+                              ])
+                            })
                        }},
                     ])
                 })

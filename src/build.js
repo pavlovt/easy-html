@@ -24,7 +24,7 @@ module.exports= function htmlElement(data, options) {
             if (cls.length > 0) res += ` class="${cls}"`
             el.attrs.filter(v => v.lhs !== 'class').forEach(v => {
                 res += ` ${v.lhs}`
-                if (v.rhs.length > 0) res += `="${v.rhs.join(' ')}"`
+                if (v.rhs.length > 0) res += `="${v.rhs.join('')}"`
                 
             })
             res += `>`
