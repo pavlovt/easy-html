@@ -12,6 +12,16 @@ function loader(content, options) {
 
   var ret = {res: res}
   if (res.lexErrors.length === 0 && res.parseErrors.length === 0) ret.content = builder(res.cst, options)
+  else {
+    var r = 'Error parsing the template: ' + content;
+    try {
+    r += `The error is: 
+    `;
+      r += ret.res.parseErrors[0].message + ' near ' + content.substr(ret.res.parseErrors[0].token.startOffset, 100);
+    } catch(err) {}
+    
+    console.warn(r);
+  }
 
   return ret
 }

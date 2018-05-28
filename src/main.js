@@ -9,7 +9,7 @@ div.login {
     form.col-4.offset-4 @submit.prevent=submit {
       
       xinput  name=username label=Username v-model=frm.username v-validate=required qq="z1 z2 z3" {}
-      span.help.is-danger v-show=errors.has('username') { '{{ errors.first(\\'username\\') }}' }
+      span.help.is-danger v-show=errors.has('username') { '{{ errors.first('username') }}' }
 
       xinput  name=password label=Password type=password v-model=frm.password v-validate='required' {}
       
@@ -21,7 +21,7 @@ console.log(txt)
 let res = parser(txt);
 // console.log(JSON.stringify(res, null, "\t"))
 if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(builder(res.cst, {macros}))
-else console.log(tokens(res), res.parseErrors[0].message, 'near', txt.substr(res.parseErrors[0].startOffset, 20), JSON.stringify(res.parseErrors))
+else console.log(tokens(res), res.parseErrors[0].message, 'near', txt.substr(res.parseErrors[0].token.startOffset, 100), JSON.stringify(res.parseErrors))
 
 function tokens(res) {
     return res.lexResult.tokens.map(v => {
