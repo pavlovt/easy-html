@@ -4,34 +4,48 @@ const builder = require('./build')
 const macros = require('./example-macros')
 // console.log(parser);
 let txt = `
-div.row {
-    div.col {
-        form :submit=submit() {
-            input type=number v-model=zzz :class="[{q: 'zz'}, zz, dd]" {}
-            !input e-type=number e-v-model=zzz label="qq" l-class="lc" w-class="wc" e-class="ec" e-name="zzz" {
-                !input e-type=number e-v-model=zzz label="qq" l-class="lc" w-class="wc" e-class="ec" e-name="zzz" {
-                    'Show me!'
-                }
-            }
+div.login {
+    h1  { 'Login page' }
+    form.col-4.offset-4 @submit.prevent=submit {
+      
+      xinput  name=username label=Username v-model=frm.username v-validate=required qq="z1 z2 z3" {}
+      span.help.is-danger v-show=errors.has('username') { '{{ errors.first('username') }}' }
 
-            select.tst-z [(*ngModel)] {
-                option v-for="v in options" :value="v.id" {
-                    'title: {{v.title}}'
-                }
-            }
-
-            button.btn.btn-primary { 'Submit' }
-        }
+      xinput  name=password label=Password type=password v-model=frm.password v-validate='required' {}
+      
+      xaction  { 'Submit' }
     }
-}
+  }
 `;
-
+console.log(txt)
 let res = parser(txt);
-console.log(JSON.stringify(res, null, "\t"))
-if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(builder(res.cst, {macros}));
+// console.log(JSON.stringify(res, null, "\t"))
+if (res.lexErrors.length === 0 && res.parseErrors.length === 0) console.log(builder(res.cst, {macros}))
+else console.log(tokens(res), res.parseErrors[0].message, 'near', txt.substr(res.parseErrors[0].token.startOffset, 100), JSON.stringify(res.parseErrors))
+
+function tokens(res) {
+    return res.lexResult.tokens.map(v => {
+        return `${v.image} type: ${v.tokenType.name}`
+    })
+}
 
 // generate the html based on the parsers' result
-/*function htmlElement(data) {
+/*
+
+div.login {
+    h1  { 'Login page' }
+    form.col-4.offset-4 @submit.prevent=submit {
+      
+      xinput  name=username label=Username v-model=frm.username v-validate=required {}
+      span.help.is-danger v-show=errors.has('username') { '{{ errors.first('username') }}' }
+
+      xinput  name=password label=Password type=password v-model=frm.password v-validate='required' {}
+      
+      xaction  { 'Submit' }
+    }
+  }
+
+function htmlElement(data) {
     let res = '', cls, tmp
     data.forEach((el) => {
         if (el.text) res += el.text.join(' ')

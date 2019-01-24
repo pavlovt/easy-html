@@ -6,7 +6,8 @@ module.exports= function htmlElement(data, options) {
     data.forEach((el) => {
         el.attrs = el.attrs || [];
         if (el.space) res += el.space
-        if (el.type == 'macros') {
+        else if (el.comment) res += el.comment.join('')
+        else if (el.type == 'macros') {
             if (!options) throw `easy-html parser: ${el.el} macros is used but no options are provided`
             if (options && !options.macros[el.el]) throw `easy-html parser: ${el.el} macros does not exist in options.macros`
             else res += options.macros[el.el](el, htmlElement, options)
@@ -23,7 +24,7 @@ module.exports= function htmlElement(data, options) {
             if (cls.length > 0) res += ` class="${cls}"`
             el.attrs.filter(v => v.lhs !== 'class').forEach(v => {
                 res += ` ${v.lhs}`
-                if (v.rhs.length > 0) res += `="${v.rhs.join(' ')}"`
+                if (v.rhs.length > 0) res += `="${v.rhs.join('')}"`
                 
             })
             res += `>`

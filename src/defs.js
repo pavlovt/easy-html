@@ -11,10 +11,10 @@ const tokenVocabulary = {}
 const tok = chevrotain.createToken;
 const Lexer = chevrotain.Lexer;
 
-const lcurly = tok({name: "lcurly", pattern: /{/});
-const rcurly = tok({name: "rcurly", pattern: /}/});
-const dlcurly = tok({name: "dlcurly", pattern: /{{/});
-const drcurly = tok({name: "drcurly", pattern: /}}/});
+const lcurly = tok({name: "lcurly", pattern: /\{/});
+const rcurly = tok({name: "rcurly", pattern: /\}/});
+const dlcurly = tok({name: "dlcurly", pattern: /\{\{/});
+const drcurly = tok({name: "drcurly", pattern: /\}\}/});
 // const lsquare = tok({name: "lsquare", pattern: /\[/});
 // const rsquare = tok({name: "rsquare", pattern: /]/});
 // const comma = tok({name: "comma", pattern: /,/});
@@ -34,7 +34,14 @@ const equote = tok({name: 'equote', pattern: /\\"/});
 const squote = tok({name: 'squote', pattern: /'/});
 // escaped single quote
 const esquote = tok({name: 'esquote', pattern: /\\'/});
+/*const esquote = tok({name: 'esquote', pattern: (text, pos) => {
+    console.log('txt', text.substr(pos,2), text.substr(pos,2) == "\'" ? [text] : null)
+    return text.substr(pos,2) == "\\'" ? [text.substr(pos,2)] : null
+}});*/
 const allbutquote = tok({name: 'allbutquote', pattern: /[^"'\s]+/});
+const linecom = tok({name: 'linecom', pattern: /\/\/.*/});
+const lcom = tok({name: 'lcom', pattern: /\/\*/});
+const rcom = tok({name: 'rcom', pattern: /\*\//});
 
 const space = tok({
 name: "space",
@@ -45,7 +52,7 @@ line_breaks: true
 
 // The order of tokens is important
 const allTokens = [
-space, drcurly, dlcurly, rcurly, lcurly, eq, equote, quote, esquote, squote, str, allbutquote
+linecom, lcom, rcom, space, drcurly, dlcurly, rcurly, lcurly, eq, equote, quote, esquote, squote, str, allbutquote
 ]
 
 const lexer = new Lexer(allTokens, {
